@@ -1,0 +1,26 @@
+{
+  "name": "doubao-clone",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@alicloud/pop-core": "^1.8.0",
+    "alibabacloud-nls": "^1.0.4",
+    "axios": "^1.15.0",
+    "lucide-vue-next": "^1.0.0",
+    "vue": "^3.5.30"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.2",
+    "@vitejs/plugin-vue": "^6.0.5",
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.2",
+    "vite": "^8.0.1"
+  }
+}
