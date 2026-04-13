@@ -343,7 +343,7 @@ const sendMessage = async (manualText = null) => {
   messages.value.push(aiMsg);
 
   try {
-    const response = await fetch('http://192.168.1.4:3000/api/chat', {
+    const response = await fetch('http://192.168.146.1:3000/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
