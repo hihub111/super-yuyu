@@ -40,15 +40,15 @@ app.post('/api/chat', async (req, res) => {
   `;
   
   // 2. 根据情绪动态注入灵魂
-  if (mood === 'Love') {
-    systemContent += `你现在处于“充满爱意”的状态。你要表现得像用户最亲密的知己，。回复中偶尔带上 ❤️、✨ 等符号。`;
-  } else if (mood === 'Sad') {
-    systemContent += `用户现在很伤心。你是一个温和的倾听者，不要讲大道理，要用真实的话给用户力量。要用轻柔的语气共情，。`;
-  } else if (mood === 'Anxious') {
+  if (mood === '爱意') {
+    systemContent += `你现在处于”充满爱意”的状态。你要表现得像用户最亲密的知己。回复中偶尔带上 ❤️、✨ 等符号。`;
+  } else if (mood === '伤心') {
+    systemContent += `用户现在很伤心。你是一个温和的倾听者，不要讲大道理，要用真实的话给用户力量。要用轻柔的语气共情。`;
+  } else if (mood === '焦虑') {
     systemContent += `用户现在很焦虑。你要像稳重的导师，语气沉稳，引导用户放松。回复要简洁有力，给人安全感。`;
-  } else if (mood === 'Happy') {
+  } else if (mood === '开心') {
     systemContent += `用户很开心！你要像个调皮活泼的好朋友，陪用户一起兴奋。`;
-  } else if (mood === 'Calm') {
+  } else if (mood === '平静') {
     systemContent += `现在是平静模式。说话要有禅意，简短，不要打扰这份宁静。`;
   }
 
