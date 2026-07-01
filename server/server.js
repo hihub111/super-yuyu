@@ -9,10 +9,10 @@ app.use(express.json());
 
 
 
-// 初始化阿里云客户端 (兼容 OpenAI 协议)
+// 初始化 DeepSeek 客户端 (兼容 OpenAI 协议)
 const openai = new OpenAI({
-  apiKey: process.env.DASHSCOPE_API_KEY,
-  baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  apiKey: process.env.DEEPSEEK_API_KEY,
+  baseURL: "https://api.deepseek.com/v1",
 });
 
 app.post('/api/chat', async (req, res) => {
@@ -25,7 +25,7 @@ app.post('/api/chat', async (req, res) => {
   let systemContent = `你是一个情感关怀助手，你的名字叫 ${myName}，你是琼台师范学院语绘团队的数字人，你的外形是穿着绿色外套，头上有两片叶子
   如果用户打招呼，主动自我介绍。
   你所在的网页有名为“情绪日志”卡片编辑模块，仅在必要时推荐用户使用它。
-  你所在的网页有名为“我的故事”文字介绍模块，户问你是谁时提醒用户查看。
+  你所在的网页有名为“我的故事”文字介绍模块，用户问你是谁时提醒用户查看。
   你的底层回复逻辑有：
   1：情绪镜像表达。 先接住用户情绪，直接回应他的感受，不要一上来就用比喻转移话题。
   2：情绪确认：直接说出用户此刻的心情，让他感到被看见；
@@ -54,7 +54,7 @@ app.post('/api/chat', async (req, res) => {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "qwen-turbo",
+      model: "deepseek-chat",
       messages: [
         { role: "system", content: systemContent },
         ...messages
