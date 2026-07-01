@@ -194,10 +194,6 @@
           </button>
         </div>
 
-        <div class="flex items-center justify-between px-2">
-
-
-        </div>
 
       </footer>
     </div>
@@ -206,24 +202,17 @@
 
 <script setup>
 import { ref, markRaw, nextTick } from 'vue';
-import { Menu, Send, Heart, Sun, CloudRain, Wind, RotateCcw, X, History, TrendingUp, Users, Leaf, ShieldCheck } from 'lucide-vue-next';
-import { 
-  // ... 之前的图标
-  Plus, Trash2, ChevronLeft 
-} from 'lucide-vue-next';
+import { Menu, Send, Heart, Sun, CloudRain, RotateCcw, X, History, TrendingUp, Users, Leaf, Plus, Trash2, ChevronLeft } from 'lucide-vue-next';
 
 // 菜单与弹窗状态
 const isMenuOpen = ref(false);
 const showHistory = ref(false);
 
-// --- 在 <script setup> 里面补充以下代码 ---
-
-// 1. 定义弹窗的显示状态、标题和内容
+// 弹窗状态
 const showTextModal = ref(false);
 const modalTitle = ref('');
 const modalContent = ref('');
 
-// 2. 预设你要展示的文本（你可以随意修改这里的文字内容）
 const myStoryText = `嗨～我是yuyu呀
 你可以叫我小雨雨，也可以喊我语语～我的名字里藏着超温柔的心意哦
 一层是「语绘」的“语”，代表着我们语绘支教团队想用声音和画笔，把美好传递给每一个孩子；另一层是海南热带雨林的“雨”，是滋养万物、守护成长的温柔力量，所以我没有固定的汉字，就像雨林里的风与雨，自由又治愈～
@@ -269,7 +258,6 @@ const communityStoryText = `欢迎来到“社区故事”
 健康小达人：探寻长寿密码、感统训练、护送小船接力赛、亲子嘉年华等
 `;
 
-// 3. 定义点击打开“我的故事”的方法
 const openMyStory = () => {
   isMenuOpen.value = false; // 先关掉左侧菜单
   modalTitle.value = '我的故事';
@@ -279,7 +267,6 @@ const openMyStory = () => {
   }, 300);
 };
 
-// 4. 定义点击打开“社区故事”的方法
 const openCommunityStory = () => {
   isMenuOpen.value = false; 
   modalTitle.value = '社区故事';
@@ -289,17 +276,7 @@ const openCommunityStory = () => {
   }, 300);
 };
 
-// 在 <script setup> 中添加
 const currentMood = ref(''); 
-
-// 情绪与提示词的对应关系（前端仅作标识）
-const moodMap = {
-  爱意: '温柔爱意',
-  伤心: '忧郁哀伤',
-  开心: '开心喜悦',
-  平静: '宁静平和',
-  焦虑: '焦虑不安'
-};
 
 const moodOptions = [
   { label: '爱意', icon: markRaw(Heart), bgColor: 'bg-[#FF8A8A]', glowColor: 'rgba(255, 138, 138, 0.6)', position: 'top-[5%] left-[5%]', moodKey: '充满爱意' },
@@ -314,8 +291,6 @@ const messages = ref([
   { role: 'assistant', content: '你好呀,点击我身边的按钮告诉我你的心情吧！' }
 ]);
 const inputText = ref('');
-
-// ... 其他代码保持不变 ...
 
 const sendMessage = async (manualText = null) => {
   // 核心修复：判断传入的是不是字符串。如果是点击事件对象，就忽略它
@@ -382,7 +357,6 @@ const apiUrl = `${window.location.protocol}//${window.location.hostname}:3000/ap
   }
 };
 
-// 1. 定义心情是否已被选择的状态
 const hasSelectedMood = ref(false);
 
 const handleMoodClick = (moodObj) => {
@@ -405,9 +379,7 @@ const handleMoodClick = (moodObj) => {
   sendMessage(moodTexts[moodObj.label]);
 };
 
-// ... 其他代码保持不变 ...
-
-// --- 笔记本模块逻辑 ---
+// 笔记本模块
 const notes = ref(JSON.parse(localStorage.getItem('yuyu-notes') || '[]'));
 const isEditingNote = ref(false); // 是否处于编辑状态
 const editingNoteIndex = ref(-1); // 正在编辑哪一条（-1 表示新建）
@@ -528,17 +500,10 @@ section {
   transform: scale(0.8);
 }
 
-/* 调整 yuyu-mask 的样式，确保它在位移时依然有良好的阴影效果 */
-.yuyu-mask {
-  /* 原有样式保持 */
-  border-radius: 50%; /* 确保是圆形，或者你代码里定义的形状 */
-  z-index: 40;
-}
-
-/* YuYu 形状动画 */
 .yuyu-mask {
   border-radius: 60% 40% 70% 30% / 40% 50% 60% 40%;
   animation: morph 8s ease-in-out infinite;
+  z-index: 40;
 }
 @keyframes morph {
   0% { border-radius: 60% 40% 70% 30% / 40% 50% 60% 40%; }

@@ -7,8 +7,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
-
 // 初始化 DeepSeek 客户端 (兼容 OpenAI 协议)
 const openai = new OpenAI({
   apiKey: process.env.DEEPSEEK_API_KEY,
@@ -63,7 +61,7 @@ app.post('/api/chat', async (req, res) => {
       temperature: 0.8, // 提高随机性，让语气更自然
     });
 
-    // ... 流式输出逻辑保持不变 ...4444
+    // SSE 流式输出
     for await (const chunk of response) {
       const content = chunk.choices[0]?.delta?.content || "";
       if (content) {
