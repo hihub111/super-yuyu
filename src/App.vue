@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-col h-[100dvh] w-screen watercolor-bg overflow-hidden font-sans text-[#4A5D4E] relative">
-    
-<div class="absolute inset-0 bg-white/40 z-0"></div>
+    <div class="absolute inset-0 bg-white/40 z-0"></div>
 
     <transition name="fade">
       <div v-if="isMenuOpen" class="absolute inset-0 bg-black/20 z-50 transition-opacity" @click="isMenuOpen = false"></div>
@@ -118,7 +117,7 @@
           </button>
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 bg-[#E8F0E9] rounded-full flex items-center justify-center">
-              <img src="./assets/yuyu-hand.png" class="w-8 h-8 round-full object-cover" />
+              <img src="./assets/yuyu-hand.png" class="w-8 h-8 rounded-full object-cover" />
             </div>
             <span class="font-bold text-[15px] tracking-tight opacity-50 uppercase">Yuyu: 情感关怀</span>
           </div>
@@ -193,8 +192,6 @@
             <Send size="18" />
           </button>
         </div>
-
-
       </footer>
     </div>
   </div>
@@ -259,12 +256,10 @@ const communityStoryText = `欢迎来到“社区故事”
 `;
 
 const openMyStory = () => {
-  isMenuOpen.value = false; // 先关掉左侧菜单
+  isMenuOpen.value = false;
   modalTitle.value = '我的故事';
-  modalContent.value = myStoryText; // 塞入提前写好的文字
-  setTimeout(() => { 
-    showTextModal.value = true; // 延迟 300ms 等菜单收回去再弹窗，视觉更平滑
-  }, 300);
+  modalContent.value = myStoryText;
+  setTimeout(() => { showTextModal.value = true; }, 300);
 };
 
 const openCommunityStory = () => {
@@ -294,26 +289,18 @@ const inputText = ref('');
 
 const sendMessage = async (manualText = null) => {
   // 核心修复：判断传入的是不是字符串。如果是点击事件对象，就忽略它
-  let userText = "";
-  if (typeof manualText === 'string') {
-    userText = manualText;
-  } else {
-    userText = inputText.value.trim();
-  }
+  let userText = typeof manualText === 'string' ? manualText : inputText.value.trim();
 
   if (!userText) return;
 
-  // 1. 发送用户消息
   messages.value.push({ role: 'user', content: userText });
-  
-  // 只有手动输入时才清空输入框
+
   if (typeof manualText !== 'string') {
     inputText.value = '';
   }
-  
+
   scrollToBottom();
 
-  // 2. 准备一个空的 AI 消息气泡
   const aiMsg = { role: 'assistant', content: '' };
   messages.value.push(aiMsg);
 
@@ -324,7 +311,7 @@ const apiUrl = `${window.location.protocol}//${window.location.hostname}:3000/ap
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         messages: messages.value,
-        mood: currentMood.value // 这里现在能正确传递当前选中的情绪标签了
+        mood: currentMood.value
       }),
     });
 
@@ -360,14 +347,9 @@ const apiUrl = `${window.location.protocol}//${window.location.hostname}:3000/ap
 const hasSelectedMood = ref(false);
 
 const handleMoodClick = (moodObj) => {
-  // 如果已经选过了，直接返回（防止快速连点）
   if (hasSelectedMood.value) return;
-
-  // 2. 立即将状态设为 true，触发 UI 消失
   hasSelectedMood.value = true;
-
-  // 之前的逻辑保持不变
-  currentMood.value = moodObj.label; 
+  currentMood.value = moodObj.label;
   const moodTexts = {
     爱意: "我感觉心里暖暖的。",
     伤心: "我今天心情有点低落...",

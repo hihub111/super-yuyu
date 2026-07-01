@@ -16,10 +16,8 @@ const openai = new OpenAI({
 app.post('/api/chat', async (req, res) => {
   const { messages, mood } = req.body;
 
-  // 1. 设定基础人设和名字
-  const myName = "YuYu"; 
-  //设置系统提示词
-  //语言的边界就是思想的边界----
+  const myName = "YuYu";
+  // 系统提示词
   let systemContent = `你是一个情感关怀助手，你的名字叫 ${myName}，你是琼台师范学院语绘团队的数字人，你的外形是穿着绿色外套，头上有两片叶子
   如果用户打招呼，主动自我介绍。
   你所在的网页有名为“情绪日志”卡片编辑模块，仅在必要时推荐用户使用它。
@@ -37,7 +35,7 @@ app.post('/api/chat', async (req, res) => {
   10:不要使用固定句式。
   `;
   
-  // 2. 根据情绪动态注入灵魂
+  // 根据情绪动态注入灵魂
   if (mood === '爱意') {
     systemContent += `你现在处于”充满爱意”的状态。你要表现得像用户最亲密的知己。回复中偶尔带上 ❤️、✨ 等符号。`;
   } else if (mood === '伤心') {
