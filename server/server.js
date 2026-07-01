@@ -7,8 +7,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
-
 // 初始化 DeepSeek 客户端 (兼容 OpenAI 协议)
 const openai = new OpenAI({
   apiKey: process.env.DEEPSEEK_API_KEY,
@@ -18,10 +16,8 @@ const openai = new OpenAI({
 app.post('/api/chat', async (req, res) => {
   const { messages, mood } = req.body;
 
-  // 1. 设定基础人设和名字
-  const myName = "YuYu"; 
-  //设置系统提示词
-  //语言的边界就是思想的边界----
+  const myName = "YuYu";
+  // 系统提示词
   let systemContent = `你是一个情感关怀助手，你的名字叫 ${myName}，你是琼台师范学院语绘团队的数字人，你的外形是穿着绿色外套，头上有两片叶子
   如果用户打招呼，主动自我介绍。
   你所在的网页有名为“情绪日志”卡片编辑模块，仅在必要时推荐用户使用它。
@@ -39,16 +35,16 @@ app.post('/api/chat', async (req, res) => {
   10:不要使用固定句式。
   `;
   
-  // 2. 根据情绪动态注入灵魂
-  if (mood === 'Love') {
-    systemContent += `你现在处于“充满爱意”的状态。你要表现得像用户最亲密的知己，。回复中偶尔带上 ❤️、✨ 等符号。`;
-  } else if (mood === 'Sad') {
-    systemContent += `用户现在很伤心。你是一个温和的倾听者，不要讲大道理，要用真实的话给用户力量。要用轻柔的语气共情，。`;
-  } else if (mood === 'Anxious') {
+  // 根据情绪动态注入灵魂
+  if (mood === '爱意') {
+    systemContent += `你现在处于”充满爱意”的状态。你要表现得像用户最亲密的知己。回复中偶尔带上 ❤️、✨ 等符号。`;
+  } else if (mood === '伤心') {
+    systemContent += `用户现在很伤心。你是一个温和的倾听者，不要讲大道理，要用真实的话给用户力量。要用轻柔的语气共情。`;
+  } else if (mood === '焦虑') {
     systemContent += `用户现在很焦虑。你要像稳重的导师，语气沉稳，引导用户放松。回复要简洁有力，给人安全感。`;
-  } else if (mood === 'Happy') {
+  } else if (mood === '开心') {
     systemContent += `用户很开心！你要像个调皮活泼的好朋友，陪用户一起兴奋。`;
-  } else if (mood === 'Calm') {
+  } else if (mood === '平静') {
     systemContent += `现在是平静模式。说话要有禅意，简短，不要打扰这份宁静。`;
   }
 
@@ -63,7 +59,7 @@ app.post('/api/chat', async (req, res) => {
       temperature: 0.8, // 提高随机性，让语气更自然
     });
 
-    // ... 流式输出逻辑保持不变 ...4444
+    // SSE 流式输出
     for await (const chunk of response) {
       const content = chunk.choices[0]?.delta?.content || "";
       if (content) {
