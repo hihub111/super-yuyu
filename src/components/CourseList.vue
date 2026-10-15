@@ -92,8 +92,8 @@
             <div class="flex gap-3">
               <input v-model="newCourse.gradeRange" placeholder="年级范围，如 1-6"
                 class="flex-1 px-4 py-3 rounded-xl bg-[#F8FAF9] outline-none text-[15px] focus:ring-2 ring-[#A2C579]/50" />
-              <input v-model="newCourse.meta.人数" placeholder="人数"
-                class="w-24 px-4 py-3 rounded-xl bg-[#F8FAF9] outline-none text-[15px] focus:ring-2 ring-[#A2C579]/50" />
+              <input v-model="newCourse.meta.人数" placeholder="学生总数"
+                class="w-28 px-4 py-3 rounded-xl bg-[#F8FAF9] outline-none text-[15px] focus:ring-2 ring-[#A2C579]/50" />
             </div>
             <div class="flex gap-3">
               <input v-model="newCourse.meta.课时" placeholder="课时(分钟)，如 80"
