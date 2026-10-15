@@ -87,6 +87,7 @@ function normalizePlan(raw) {
     },
     学习者特征分析: str(p.学习者特征分析),
     教材内容分析: str(p.教材内容分析),
+    分组与加分规则: str(p.分组与加分规则),
     教学过程: (Array.isArray(p.教学过程) ? p.教学过程 : []).map((s) => ({
       分钟: str(s?.分钟),
       环节: str(s?.环节),
@@ -117,6 +118,7 @@ function validatePlan(p) {
   const missing = [];
   if (!p.教学目标.知识 && !p.教学目标.能力 && !p.教学目标.情感) missing.push('教学目标');
   if (!p.教学重点) missing.push('教学重点');
+  if (!p.分组与加分规则) missing.push('分组与加分规则');
   if (!p.教学过程.length) missing.push('教学过程');
   const safety = Object.values(p.安全预案).filter(Boolean).length;
   if (safety < 3) missing.push('安全预案(至少3块)');

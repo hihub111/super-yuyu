@@ -28,6 +28,7 @@
       <Field label="学生准备"><textarea v-model="plan.教学准备.学生" rows="2" class="input" /></Field>
       <Field label="学习者特征分析"><textarea v-model="plan.学习者特征分析" rows="3" class="input" placeholder="年级范围、混龄情况、认知特点…" /></Field>
       <Field label="教材内容分析"><textarea v-model="plan.教材内容分析" rows="3" class="input" placeholder="课程内容与设计思路…" /></Field>
+      <Field label="分组与加分规则"><textarea v-model="plan.分组与加分规则" rows="3" class="input" placeholder="每组高低年级搭配；回答问题+2分、纪律好+1分、小组展示+3分，结营兑换奖励…" /></Field>
     </section>
 
     <!-- 教学过程（逐环节） -->
