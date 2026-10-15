@@ -4,9 +4,9 @@
       <!-- 品牌区 -->
       <div class="flex flex-col items-center mb-6">
         <div class="yuyu-mask w-20 h-20 border-4 border-white shadow-xl bg-[#E8F0E9] overflow-hidden">
-          <img src="../assets/yuyu-hand.png" class="w-full h-full object-cover" alt="语语" />
+          <img src="../assets/yuyu-hand.png" class="w-full h-full object-cover" alt="yuyu" />
         </div>
-        <h1 class="mt-3 text-xl font-bold text-[#4A5D4E]">语语</h1>
+        <h1 class="mt-3 text-xl font-bold text-[#4A5D4E]">yuyu</h1>
         <p class="text-sm opacity-60">支教课程设计助手</p>
       </div>
 

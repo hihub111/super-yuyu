@@ -4,7 +4,7 @@ body {
   margin: 0;
 }
 
-/* ===== 语语品牌样式（全局，供各组件使用） ===== */
+/* ===== yuyu品牌样式（全局，供各组件使用） ===== */
 
 .watercolor-bg {
   background-image: url("./assets/watercolor-bg.png");

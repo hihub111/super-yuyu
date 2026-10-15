@@ -1,5 +1,5 @@
 #!/bin/bash
-# 一键启动语语服务 + cloudflared 内网隧道（试用版）
+# 一键启动yuyu服务 + cloudflared 内网隧道（试用版）
 # 用法: ./start-tunnel.sh
 # 注意: 快速隧道地址每次重启都会变化，启动后请重新把地址发给队友
 cd "$(dirname "$0")/server"

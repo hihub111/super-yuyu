@@ -41,6 +41,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(config.port, () => {
-  console.log(`语语后端已就绪: http://localhost:${config.port}`);
+  console.log(`yuyu后端已就绪: http://localhost:${config.port}`);
   console.log(`数据库: ${config.dbPath}`);
 });

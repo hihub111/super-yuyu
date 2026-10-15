@@ -3,10 +3,10 @@
     <!-- 顶栏 -->
     <header class="bg-white/90 backdrop-blur-md rounded-b-[30px] shadow-sm px-5 py-3 flex items-center justify-between shrink-0 z-40">
       <div class="flex items-center gap-2.5">
-        <img src="../assets/yuyu-hand.png" class="w-9 h-9 rounded-full object-cover" alt="语语" />
+        <img src="../assets/yuyu-hand.png" class="w-9 h-9 rounded-full object-cover" alt="yuyu" />
         <div>
           <p class="font-bold text-[15px] leading-tight flex items-center gap-1.5">
-            语语 · 课程工作台
+            yuyu · 课程工作台
             <span v-if="isAdmin" class="text-[9px] px-1.5 py-0.5 rounded-full bg-[#FFD966]/40 text-amber-600 font-bold">管理员</span>
           </p>
           <p class="text-[11px] opacity-50 leading-tight">{{ user.displayName }} · {{ user.studentId }}</p>

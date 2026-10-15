@@ -4,7 +4,7 @@
     <div v-if="generating" class="bg-white/90 backdrop-blur rounded-2xl p-4 shadow-sm">
       <div class="flex items-center gap-2 mb-3">
         <span class="w-2 h-2 rounded-full bg-[#A2C579] animate-pulse"></span>
-        <span class="text-xs font-bold text-[#7A907E]">语语正在写逐字稿…</span>
+        <span class="text-xs font-bold text-[#7A907E]">yuyu正在写逐字稿…</span>
       </div>
       <Markdown :content="liveScript || '…'" />
     </div>
@@ -33,7 +33,7 @@
     </template>
 
     <div v-else class="py-16 text-center text-sm opacity-40">
-      还没有逐字稿<br />确认教案后，点上方「生成逐字稿」让语语帮你写
+      还没有逐字稿<br />确认教案后，点上方「生成逐字稿」让yuyu帮你写
     </div>
   </div>
 </template>

@@ -34,7 +34,7 @@
     </section>
 
     <div v-if="!draft.teacher.length && !draft.student.length" class="py-8 text-center text-sm opacity-40">
-      还没有物料清单，点上方「生成物料清单」让语语帮你列
+      还没有物料清单，点上方「生成物料清单」让yuyu帮你列
     </div>
   </div>
 </template>

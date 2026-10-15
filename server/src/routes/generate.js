@@ -117,7 +117,7 @@ generateRouter.post('/', async (req, res) => {
         topK: 4,
       });
       const context = refs.map((r) => `【语料｜${r.section}】\n${r.content}`).join('\n\n');
-      emit({ type: 'status', stage: 'generating', message: '语语正在思考…' });
+      emit({ type: 'status', stage: 'generating', message: 'yuyu正在思考…' });
       await streamComplete({
         messages: [
           { role: 'system', content: `${buildSystemPrompt('chat', course)}\n\n【课程信息】\n课程名：${course.title}\n类型：${course.course_type}\n年级：${course.grade_range}\n当前教案：${course.plan_json}\n\n【可参考的课程库语料】\n${context}` },
@@ -135,7 +135,7 @@ generateRouter.post('/', async (req, res) => {
     let payload;
     let usedFallback = false;
     try {
-      emit({ type: 'status', stage: 'thinking', message: '语语正在规划生成步骤…' });
+      emit({ type: 'status', stage: 'thinking', message: 'yuyu正在规划生成步骤…' });
       const result = await runAgent({ step, course, feedback, sourceText, ctx });
       payload = result.lastSkillResult?.payload;
       if (!payload) throw new Error('模型未产出结构化结果');

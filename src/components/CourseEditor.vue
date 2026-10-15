@@ -47,10 +47,10 @@
           <button v-if="currentStep === 'plan' && course?.status === 'draft' && !showSource"
             @click="showSource = true"
             class="text-[11px] text-[#7A907E] font-medium underline underline-offset-2">
-            ＋ 粘贴原始材料（策划案/活动方案，可让语语转换格式）
+            ＋ 粘贴原始材料（策划案/活动方案，可让yuyu转换格式）
           </button>
           <textarea v-if="showSource" v-model="sourceText" rows="5"
-            placeholder="粘贴原始策划案或活动方案全文，语语会把它转换为标准教案格式…"
+            placeholder="粘贴原始策划案或活动方案全文，yuyu会把它转换为标准教案格式…"
             class="w-full px-4 py-3 rounded-xl bg-white/80 text-[13px] leading-relaxed outline-none focus:ring-2 ring-[#A2C579]/50 resize-y" />
           <input v-if="hasContent" v-model="feedback" placeholder="修改意见（可选），如：导入环节换成魔术开场"
             class="w-full px-4 py-2 rounded-xl bg-white/80 text-[13px] outline-none focus:ring-2 ring-[#A2C579]/50" />
@@ -66,7 +66,7 @@
         </div>
       </main>
 
-      <!-- 右侧语语助手（桌面） -->
+      <!-- 右侧yuyu助手（桌面） -->
       <aside class="hidden lg:flex w-[300px] shrink-0 border-l border-white">
         <ChatPanel :course-id="course?.id" :events="events" :generating="generating" :on-stop="stopGenerate" />
       </aside>
@@ -90,7 +90,7 @@
       </button>
     </footer>
 
-    <!-- 移动端语语助手（全屏抽屉） -->
+    <!-- 移动端yuyu助手（全屏抽屉） -->
     <transition name="fade">
       <div v-if="showAssistant" class="absolute inset-0 z-[70] bg-black/30 flex flex-col lg:hidden">
         <div class="h-full w-full max-w-md ml-auto bg-white shadow-2xl flex flex-col">
@@ -163,7 +163,7 @@ const canGenerate = computed(() => {
 
 const genButtonText = computed(() => {
   if (!canGenerate.value) return '生成逐字稿';
-  return hasContent.value ? `重新生成${stepLabels[currentStep.value]}${feedback.value.trim() ? '（按修改意见）' : ''}` : `让语语生成${stepLabels[currentStep.value]}`;
+  return hasContent.value ? `重新生成${stepLabels[currentStep.value]}${feedback.value.trim() ? '（按修改意见）' : ''}` : `让yuyu生成${stepLabels[currentStep.value]}`;
 });
 
 onMounted(loadCourse);

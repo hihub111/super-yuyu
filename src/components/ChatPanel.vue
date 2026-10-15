@@ -2,8 +2,8 @@
   <div class="flex flex-col h-full bg-white/80 backdrop-blur-sm">
     <!-- 面板头 -->
     <div class="px-4 py-3 border-b border-gray-100 flex items-center gap-2 shrink-0">
-      <img src="../assets/yuyu-hand.png" class="w-7 h-7 rounded-full object-cover" alt="语语" />
-      <span class="font-bold text-sm flex-1">语语助手</span>
+      <img src="../assets/yuyu-hand.png" class="w-7 h-7 rounded-full object-cover" alt="yuyu" />
+      <span class="font-bold text-sm flex-1">yuyu助手</span>
       <button v-if="generating" @click="onStop"
         class="text-xs px-3 py-1.5 rounded-full bg-red-100 text-red-500 font-bold hover:bg-red-200 transition-colors">
         ■ 停止
@@ -43,7 +43,7 @@
 
       <!-- 空态 -->
       <div v-if="!events.length && !chatMessages.length" class="py-16 text-center">
-        <img src="../assets/yuyu-hand.png" class="w-14 h-14 rounded-full object-cover mx-auto opacity-60" alt="语语" />
+        <img src="../assets/yuyu-hand.png" class="w-14 h-14 rounded-full object-cover mx-auto opacity-60" alt="yuyu" />
         <p class="mt-3 text-xs opacity-40 leading-relaxed">
           生成过程会在这里展示<br />也可以直接问我问题，比如：<br />「分层提问怎么写？」「这节课有什么安全风险？」
         </p>
@@ -53,7 +53,7 @@
     <!-- 对话输入 -->
     <div class="p-3 border-t border-gray-100 shrink-0">
       <div class="flex items-end gap-2 bg-[#F1F6F2] rounded-2xl p-1.5 pl-3">
-        <textarea v-model="chatInput" rows="1" placeholder="问问语语…"
+        <textarea v-model="chatInput" rows="1" placeholder="问问yuyu…"
           @keydown.enter.exact.prevent="sendChat"
           class="flex-1 max-h-24 py-1.5 outline-none resize-none text-[14px] bg-transparent" />
         <button @click="sendChat" :disabled="chatBusy || !chatInput.trim()"
