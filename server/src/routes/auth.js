@@ -46,13 +46,28 @@ authRouter.post('/register', (req, res) => {
   res.json({ user: { id: info.lastInsertRowid, studentId, displayName: String(displayName).trim(), role: 'teacher' } });
 });
 
-// 登录
+// 登录（带限速：每 IP 15 分钟内最多失败 10 次，防公网爆破）
+const loginAttempts = new Map();
+const MAX_FAILS = 10;
+const WINDOW_MS = 15 * 60 * 1000;
+
 authRouter.post('/login', (req, res) => {
+  const ip = req.ip || 'unknown';
+  const now = Date.now();
+  const rec = loginAttempts.get(ip);
+  if (rec && now > rec.resetAt) loginAttempts.delete(ip);
+  const cur = loginAttempts.get(ip) || { fails: 0, resetAt: now + WINDOW_MS };
+  if (cur.fails >= MAX_FAILS) {
+    return res.status(429).json({ error: '尝试次数过多，请 15 分钟后再试' });
+  }
   const { studentId, password } = req.body || {};
   const row = db.prepare('SELECT * FROM users WHERE student_id = ?').get(studentId);
   if (!row || !verifyPassword(password || '', row.password_hash)) {
+    cur.fails += 1;
+    loginAttempts.set(ip, cur);
     return res.status(401).json({ error: '学号或密码不正确' });
   }
+  loginAttempts.delete(ip);
   const { token } = createSession(row.id);
   res.cookie(SESSION_COOKIE, token, COOKIE_OPTS);
   res.json({ user: { id: row.id, studentId: row.student_id, displayName: row.display_name, role: row.role } });

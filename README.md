@@ -70,6 +70,26 @@ EMBED_PROVIDER=pseudo node scripts/ingest.mjs --dir corpus/风车 --type 科学 
 
 详见 `CLAUDE.md`。
 
+## 部署与内网穿透
+
+生产模式单端口运行（Express 直接托管前端构建产物 + API）：
+
+```bash
+npm run build          # 生成 dist/
+cd server && npm start # 只开这一个端口：http://localhost:3000
+```
+
+穿透/上云都只需暴露 **3000 一个端口**（登录、生成、SSE 全部同源）：
+
+- **花生壳**（试用）：下载客户端 → 内网穿透 → 添加映射（内网主机 `127.0.0.1`，端口 `3000`，类型 HTTP/HTTPS）→ 把生成的访问域名发给队友。电脑保持开机联网。
+- **cpolar**：同上，免费版 1Mbps，域名随机。
+- **云服务器**（正式使用）：`npm run build` + 拷贝 `server/`（含 `dist/`）+ `npm install` + `node src/index.js`，注意把 `server/data/yuyu.db` 和语料一并拷贝。
+
+暴露公网前请确认：
+1. `TEAM_INVITE_CODE` 已改成非默认值（`server/.env`）
+2. 登录接口已有限速（每 IP 15 分钟 10 次失败）
+3. 建议通过 HTTPS 链接访问（花生壳免费提供 HTTPS 域名）
+
 ## 数据与备份
 
 - 数据库：`server/data/yuyu.db`（SQLite 单文件，gitignored）——备份直接复制该文件
