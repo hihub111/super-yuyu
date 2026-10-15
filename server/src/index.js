@@ -6,6 +6,7 @@ import { config } from './config.js';
 import { authRouter } from './routes/auth.js';
 import { coursesRouter } from './routes/courses.js';
 import { generateRouter } from './routes/generate.js';
+import { adminRouter } from './routes/admin.js';
 
 const app = express();
 // 前后端同源（vite 代理 / 生产模式 Express 直接托管 dist），无需 CORS
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRouter);
 app.use('/api/courses', coursesRouter);
 app.use('/api/generate', generateRouter);
+app.use('/api/admin', adminRouter);
 
 app.use('/api', (req, res) => res.status(404).json({ error: '接口不存在' }));
 

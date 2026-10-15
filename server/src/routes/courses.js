@@ -133,11 +133,13 @@ coursesRouter.delete('/:id', (req, res) => {
   res.json({ ok: true });
 });
 
-// 分享 / 撤回分享到团队课程库
+// 分享 / 撤回分享到团队课程库（owner 或管理员可操作；管理员"下架"不删除对方课程数据）
 coursesRouter.post('/:id/share', (req, res) => {
   const row = db.prepare('SELECT * FROM courses WHERE id = ?').get(req.params.id);
   if (!row) return res.status(404).json({ error: '课程不存在' });
-  if (row.owner_id !== req.user.id) return res.status(403).json({ error: '只能分享自己的课程' });
+  if (row.owner_id !== req.user.id && req.user.role !== 'admin') {
+    return res.status(403).json({ error: '只能操作自己的课程' });
+  }
   const shared = req.body?.shared ? 1 : 0;
   db.prepare(`UPDATE courses SET is_shared = ?, updated_at = datetime('now') WHERE id = ?`).run(shared, req.params.id);
   res.json({ ok: true, isShared: !!shared });

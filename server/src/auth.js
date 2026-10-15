@@ -50,3 +50,11 @@ export function requireAuth(req, res, next) {
   };
   next();
 }
+
+// 管理员中间件（requireAuth 之后使用）
+export function requireAdmin(req, res, next) {
+  if (req.user?.role !== 'admin') {
+    return res.status(403).json({ error: '需要管理员权限' });
+  }
+  next();
+}

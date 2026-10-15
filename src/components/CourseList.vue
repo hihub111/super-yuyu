@@ -5,13 +5,22 @@
       <div class="flex items-center gap-2.5">
         <img src="../assets/yuyu-hand.png" class="w-9 h-9 rounded-full object-cover" alt="语语" />
         <div>
-          <p class="font-bold text-[15px] leading-tight">语语 · 课程工作台</p>
+          <p class="font-bold text-[15px] leading-tight flex items-center gap-1.5">
+            语语 · 课程工作台
+            <span v-if="isAdmin" class="text-[9px] px-1.5 py-0.5 rounded-full bg-[#FFD966]/40 text-amber-600 font-bold">管理员</span>
+          </p>
           <p class="text-[11px] opacity-50 leading-tight">{{ user.displayName }} · {{ user.studentId }}</p>
         </div>
       </div>
-      <button @click="doLogout" class="text-sm px-4 py-2 rounded-xl bg-[#F1F6F2] hover:bg-[#E8F0E9] font-medium transition-colors">
-        退出
-      </button>
+      <div class="flex items-center gap-2">
+        <button v-if="isAdmin" @click="openMembers"
+          class="text-sm px-3 py-2 rounded-xl bg-[#F1F6F2] hover:bg-[#E8F0E9] font-medium transition-colors">
+          成员
+        </button>
+        <button @click="doLogout" class="text-sm px-4 py-2 rounded-xl bg-[#F1F6F2] hover:bg-[#E8F0E9] font-medium transition-colors">
+          退出
+        </button>
+      </div>
     </header>
 
     <!-- 主区 -->
@@ -65,10 +74,16 @@
               <h3 class="font-bold text-[15px] truncate">{{ c.title }}</h3>
               <p class="text-xs opacity-50 mt-0.5">{{ c.ownerName }} · {{ c.courseType }} · {{ c.gradeRange }}年级</p>
             </div>
-            <button @click="copyCourse(c)"
-              class="shrink-0 text-xs px-3 py-1.5 rounded-full bg-[#7A907E]/10 text-[#7A907E] font-bold hover:bg-[#7A907E]/20 transition-colors">
-              复制到我的课程
-            </button>
+            <div class="flex items-center gap-2 shrink-0">
+              <button v-if="isAdmin" @click="unshareCourse(c)"
+                class="text-xs px-3 py-1.5 rounded-full bg-red-50 text-red-400 font-bold hover:bg-red-100 transition-colors">
+                下架
+              </button>
+              <button @click="copyCourse(c)"
+                class="text-xs px-3 py-1.5 rounded-full bg-[#7A907E]/10 text-[#7A907E] font-bold hover:bg-[#7A907E]/20 transition-colors">
+                复制到我的课程
+              </button>
+            </div>
           </div>
         </div>
         <div v-if="!sharedCourses.length" class="py-12 text-center text-sm opacity-40">
@@ -113,13 +128,36 @@
         </div>
       </div>
     </transition>
+    <!-- 成员列表（管理员） -->
+    <transition name="fade">
+      <div v-if="showMembers" class="absolute inset-0 bg-black/40 z-[60] flex items-end sm:items-center justify-center" @click.self="showMembers = false">
+        <div class="bg-white rounded-t-[24px] sm:rounded-[24px] w-full max-w-md p-6 shadow-2xl">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-lg">团队成员（{{ members.length }} 人）</h3>
+            <button @click="showMembers = false" class="p-1"><X size="18" class="text-gray-400" /></button>
+          </div>
+          <div class="max-h-[50vh] overflow-y-auto space-y-2">
+            <div v-for="m in members" :key="m.id" class="flex items-center justify-between p-3 bg-[#F8FAF9] rounded-xl">
+              <div>
+                <p class="text-sm font-bold">{{ m.displayName }} <span class="text-[10px] opacity-40 font-normal">{{ m.studentId }}</span></p>
+                <p class="text-[11px] opacity-40">注册于 {{ (m.createdAt || '').slice(0, 10) }}</p>
+              </div>
+              <span :class="['text-[10px] px-2 py-1 rounded-full font-bold',
+                            m.role === 'admin' ? 'bg-[#FFD966]/40 text-amber-600' : 'bg-gray-100 text-gray-400']">
+                {{ m.role === 'admin' ? '管理员' : '老师' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { Plus } from 'lucide-vue-next';
+import { Plus, X } from 'lucide-vue-next';
 import { request } from '../api/index.js';
 import { user, logout } from '../composables/useAuth.js';
 import { COURSE_TYPES, STATUS_LABELS } from '../schema.js';
@@ -132,8 +170,12 @@ const statusLabels = STATUS_LABELS;
 
 const myCourses = ref([]);
 const sharedCourses = ref([]);
+const members = ref([]);
+const showMembers = ref(false);
 const error = ref('');
 const busy = ref(false);
+
+const isAdmin = computed(() => user.value?.role === 'admin');
 
 const showNewDialog = ref(false);
 const newCourse = ref({ title: '', courseType: '科学', gradeRange: '1-6', meta: { 人数: '', 课时: '', 可用物资: '' } });
@@ -201,5 +243,24 @@ async function removeCourse(c) {
 async function doLogout() {
   await logout();
   router.push('/login');
+}
+
+async function openMembers() {
+  showMembers.value = true;
+  try {
+    members.value = await request('/api/admin/users');
+  } catch (e) {
+    error.value = e.message;
+  }
+}
+
+async function unshareCourse(c) {
+  if (!confirm(`确定把「${c.title}」从团队课程库下架吗？（对方的课程数据会保留）`)) return;
+  try {
+    await request(`/api/courses/${c.id}/share`, { method: 'POST', body: { shared: false } });
+    sharedCourses.value = sharedCourses.value.filter((x) => x.id !== c.id);
+  } catch (e) {
+    error.value = e.message;
+  }
 }
 </script>
