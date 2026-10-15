@@ -3,3 +3,44 @@
 body {
   margin: 0;
 }
+
+/* ===== 语语品牌样式（全局，供各组件使用） ===== */
+
+.watercolor-bg {
+  background-image: url("./assets/watercolor-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #fcf4f6;
+}
+
+.leaf-紋理-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("./assets/leaf-pattern.png");
+  background-repeat: repeat;
+  background-size: 300px;
+  opacity: 0.40;
+  pointer-events: none;
+  z-index: 0;
+}
+.leaf-紋理-bg > * { position: relative; z-index: 10; }
+
+.yuyu-mask {
+  border-radius: 60% 40% 70% 30% / 40% 50% 60% 40%;
+  animation: morph 8s ease-in-out infinite;
+}
+@keyframes morph {
+  0% { border-radius: 60% 40% 70% 30% / 40% 50% 60% 40%; }
+  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  100% { border-radius: 60% 40% 70% 30% / 40% 50% 60% 40%; }
+}
+
+::-webkit-scrollbar { display: none; }
+
+/* Vue 过渡动画 */
+.slide-enter-active, .slide-leave-active { transition: transform 0.3s ease; }
+.slide-enter-from, .slide-leave-to { transform: translateX(-100%); }
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }

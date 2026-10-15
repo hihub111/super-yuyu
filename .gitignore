@@ -11,9 +11,14 @@ node_modules
 dist
 .env
 .env.*
+!server/.env.example
 dist-ssr
 *.local
 CLAUDE.md
+
+# 服务端数据与语料（本地私有）
+server/data
+server/corpus
 
 # Editor directories and files
 .vscode/*
