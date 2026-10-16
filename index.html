@@ -8,6 +8,21 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      // 诊断用：把 JS 错误直接画到屏幕上（白屏时能看到原因）
+      window.addEventListener('error', function (e) {
+        var el = document.createElement('pre');
+        el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#000;color:#0f0;font-size:12px;z-index:99999;padding:8px;margin:0;white-space:pre-wrap;word-break:break-all';
+        el.textContent = 'JS错误: ' + (e.message || e.type) + '\n来源: ' + (e.filename || '') + ' 行:' + (e.lineno || '') + ' 列:' + (e.colno || '');
+        document.body.appendChild(el);
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        var el = document.createElement('pre');
+        el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#000;color:#f60;font-size:12px;z-index:99999;padding:8px;margin:0;white-space:pre-wrap;word-break:break-all';
+        el.textContent = 'Promise错误: ' + ((e.reason && (e.reason.message || e.reason)) || e.type);
+        document.body.appendChild(el);
+      });
+    </script>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

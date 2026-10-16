@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
 import cookieParser from 'cookie-parser';
+import compression from 'compression';
 import { config } from './config.js';
 import { authRouter } from './routes/auth.js';
 import { coursesRouter } from './routes/courses.js';
@@ -9,6 +10,8 @@ import { generateRouter } from './routes/generate.js';
 import { adminRouter } from './routes/admin.js';
 
 const app = express();
+// gzip 压缩：缩小静态资源体积，任何隧道/带宽下都更快更稳
+app.use(compression());
 // 前后端同源（vite 代理 / 生产模式 Express 直接托管 dist），无需 CORS
 app.use(express.json({ limit: '2mb' }));
 app.use(cookieParser());
