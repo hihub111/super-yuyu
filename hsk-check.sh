@@ -7,16 +7,19 @@ HSK_DOMAIN="${HSK_DOMAIN:-http://si131og190681.vicp.fun}"
 LOCAL="${LOCAL:-http://localhost:3000}"
 
 check() {
-  # 动态取当前构建的入口 JS 资源名（重构建后文件名会变，这样永远不失效）
-  local asset
-  asset=$(curl -s --max-time 10 "$LOCAL/" | grep -oE '/assets/[a-zA-Z0-9_-]+\.js' | head -1)
+  # 动态取当前构建中体积最大的 JS 资源（大文件才暴露截断问题，小文件永远能过）
+  local asset="" a max=0 sz
+  for a in $(curl -s --max-time 10 "$LOCAL/" | grep -oE '/assets/[a-zA-Z0-9_-]+\.js' | sort -u); do
+    sz=$(curl -s --max-time 10 -o /dev/null -w "%{size_download}" "$LOCAL$a")
+    if [ "$sz" -gt "$max" ]; then max=$sz; asset=$a; fi
+  done
   if [ -z "$asset" ]; then
     echo "[$(date '+%H:%M:%S')] ⚠ 本地服务不可用，无法检测"
     return 2
   fi
   local expected got
-  expected=$(curl -s --max-time 10 -o /dev/null -w "%{size_download}" "$LOCAL$asset")
-  got=$(curl -sk --max-time 30 -o /dev/null -w "%{size_download}" "$HSK_DOMAIN$asset")
+  expected=$max
+  got=$(curl -s --max-time 60 -o /dev/null -w "%{size_download}" "$HSK_DOMAIN$asset")
   if [ "$got" = "$expected" ]; then
     echo "[$(date '+%H:%M:%S')] ✅ 花生壳正常（$got/$expected B）"
     return 0
