@@ -83,9 +83,17 @@ cd server && npm start # 只开这一个端口：http://localhost:3000
 
 - **花生壳**（试用）：下载客户端 → 内网穿透 → 添加映射（内网主机 `127.0.0.1`，端口 `3000`，类型 HTTP/HTTPS）→ 把生成的访问域名发给队友。电脑保持开机联网。
 - **cpolar**：同上，免费版 1Mbps，域名随机。
+- **cloudflared 快速隧道**（脚本一键）：
+  ```bash
+  npm run build        # 脚本不含构建，先手动出 dist/
+  ./start-tunnel.sh    # 拉起后端(若未运行) + 隧道，打印 trycloudflare 地址
+  ./stop-tunnel.sh     # 一键停止后端 + 隧道
+  ```
+  快速隧道免费、无需注册账号，但**地址每次重启都会变**（需重新发给队友），且免费版偶尔会截断大响应（可用 `./hsk-check.sh` 检测）。日志在 `/tmp/yuyu-server.log` 与 `/tmp/yuyu-tunnel.log`。
 - **云服务器**（正式使用）：`npm run build` + 拷贝 `server/`（含 `dist/`）+ `npm install` + `node src/index.js`，注意把 `server/data/yuyu.db` 和语料一并拷贝。
 
 暴露公网前请确认：
+
 1. `TEAM_INVITE_CODE` 已改成非默认值（`server/.env`）
 2. 登录接口已有限速（每 IP 15 分钟 10 次失败）
 3. 建议通过 HTTPS 链接访问（花生壳免费提供 HTTPS 域名）
@@ -97,4 +105,4 @@ cd server && npm start # 只开这一个端口：http://localhost:3000
 
 ## 团队
 
-琼台师范学院 · 语绘童心志愿服务团
+琼台师范学院 · "语绘童心，绿耀琼乡"蔚蓝师语实践团
